@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class NequiController {
     @GetMapping("/")
     public String hello() {
-        return "Hola desde Spring Boot! sapo usted";
+        return "Hola desde Spring Boot!";
     }
 
 }
