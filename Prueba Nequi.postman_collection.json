@@ -1,0 +1,364 @@
+{
+	"info": {
+		"_postman_id": "3523fbbc-e372-481c-878d-e201d56113d3",
+		"name": "Prueba Nequi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9781106"
+	},
+	"item": [
+		{
+			"name": "Agregar Franquisia",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Sharpie\",\n    \"branchs\": [\n        {\n            \"nombre\": \"Manizales\",\n            \"productos\": [\n                {\n                    \"nombre\": \"Mango Loco\",\n                    \"stock\": 15\n                },\n                {\n                    \"nombre\": \"Mango Sabroso\",\n                    \"stock\": 15\n                }\n            ]\n        },\n        {\n            \"nombre\": \"Pereira\",\n            \"productos\": [\n                {\n                    \"nombre\": \"Mango Sabroso\",\n                    \"stock\": 25\n                }\n            ]\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/franchise/add",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"franchise",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar sucursal",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Manizales\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/franchise/add_branch?franchise=Apple&branch=Ibague",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"franchise",
+						"add_branch"
+					],
+					"query": [
+						{
+							"key": "franchise",
+							"value": "Apple"
+						},
+						{
+							"key": "branch",
+							"value": "Ibague"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar producto sucursal",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Manizales\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/product/add?franchise=Monster&branch=Manizales&product=Cuadros",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"add"
+					],
+					"query": [
+						{
+							"key": "franchise",
+							"value": "Monster"
+						},
+						{
+							"key": "branch",
+							"value": "Manizales"
+						},
+						{
+							"key": "product",
+							"value": "Cuadros"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar stock",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Manizales\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/product/updateStock?franchise=Monster&branch=Manizales&product=Cuadros&stock=35",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"updateStock"
+					],
+					"query": [
+						{
+							"key": "franchise",
+							"value": "Monster"
+						},
+						{
+							"key": "branch",
+							"value": "Manizales"
+						},
+						{
+							"key": "product",
+							"value": "Cuadros"
+						},
+						{
+							"key": "stock",
+							"value": "35"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update name franchise",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Manizales\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/franchise/updateName?franchiseName=Monster&newName=Apple",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"franchise",
+						"updateName"
+					],
+					"query": [
+						{
+							"key": "franchiseName",
+							"value": "Monster"
+						},
+						{
+							"key": "newName",
+							"value": "Apple"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update name branch",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Manizales\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/franchise/updateBranchName?franchiseName=Apple&branchName=Pereira&newName=Rio",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"franchise",
+						"updateBranchName"
+					],
+					"query": [
+						{
+							"key": "franchiseName",
+							"value": "Apple"
+						},
+						{
+							"key": "branchName",
+							"value": "Pereira"
+						},
+						{
+							"key": "newName",
+							"value": "Rio"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Max stock",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Manizales\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/franchise/max_stock?franchise=Monster",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"franchise",
+						"max_stock"
+					],
+					"query": [
+						{
+							"key": "franchise",
+							"value": "Monster"
+						},
+						{
+							"key": "branch",
+							"value": "Santa Marta",
+							"disabled": true
+						},
+						{
+							"key": "product",
+							"value": "Audifonos",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "eliminar producto de sucursal",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Manizales\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/product/delete?franchise=Monster&branch=Santa Marta&product=Audifonos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "franchise",
+							"value": "Monster"
+						},
+						{
+							"key": "branch",
+							"value": "Santa Marta"
+						},
+						{
+							"key": "product",
+							"value": "Audifonos"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://neoris-test-b4835b85692e.herokuapp.com",
+			"type": "default"
+		}
+	]
+}
