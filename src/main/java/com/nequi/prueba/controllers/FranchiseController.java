@@ -1,8 +1,11 @@
 package com.nequi.prueba.controllers;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +49,19 @@ public class FranchiseController {
             FranchiseModel modelResponse = branchService.addBranch(franchise, branch);
             FranchiseDTO dto = FranchiseMapper.toDto(modelResponse);
             return new ResponseEntity<>(dto, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+
+        }
+    }
+
+
+    @GetMapping("/max_stock")
+    public ResponseEntity<Map<String,?>> maxStock(@RequestParam String franchise) {
+        try {
+            Map<String, ?> modelResponse = franchiseService.getMaxStock(franchise);
+            return new ResponseEntity<>(modelResponse, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);

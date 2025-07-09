@@ -1,7 +1,10 @@
 package com.nequi.prueba.services;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +59,6 @@ public class FranchiseServiceImpl implements FranchiseService {
         for (BranchDTO branchDto : dto.getBranchs()) {
             Optional<BranchModel> existingBranch = branchRepository.findByNombreAndFranchise_Id(
                     branchDto.getNombre(), franchise.getId());
-
             if (existingBranch.isPresent()) {
                 branchsTemp.add(existingBranch.get());
             } else {
@@ -87,8 +89,6 @@ public class FranchiseServiceImpl implements FranchiseService {
         return franchise;
     }
 
-
-
     @Override
     public FranchiseDTO findFullData(Long id) throws Exception {
         FranchiseModel franchise = franchiseRepository.findById(id).orElseThrow();
@@ -108,4 +108,134 @@ public class FranchiseServiceImpl implements FranchiseService {
         return dto;
     }
 
+    @Override
+    public FranchiseModel findByName(String name) throws Exception {
+        return franchiseRepository.findByNombre(name).orElseThrow();
+    }
+
+    @Override
+    public FranchiseModel deleteProcuctToBranch(String franchiseName, String branchName, String productName)
+            throws Exception {
+        ProductModel productMode = new ProductModel();
+        productMode.setNombre(productName);
+        ProductModel productModel = productService.findOrSave(ProductDTO.fromEntity(productMode));
+
+        FranchiseModel franchiseModel = findByName(franchiseName);
+
+        BranchModel branch = branchRepository.findByNombreAndFranchise_Id(
+                branchName, franchiseModel.getId()).orElseThrow();
+
+        List<BranchProductModel> products = branchProductRepository.findAllByBranch_Id(branch.getId());
+        Boolean existe = validateProduct(products, productName);
+
+        if (!existe) {
+            throw new Exception("El producto no esta registrado en la franquisia");
+        }
+
+        BranchProductModel branchProduct = branchProductRepository
+                .findByBranch_IdAndProduct_Id(branch.getId(), productModel.getId())
+                .orElse(null);
+        if (branchProduct != null)
+            branchProductRepository.deleteById(branchProduct.getId());
+
+        return franchiseModel;
+
+    }
+
+    @Override
+    public FranchiseModel addProductToBranch(String franchiseName, String branchName, String productName)
+            throws Exception {
+
+        ProductModel productModel = productService.findOrSave(productName);
+        FranchiseModel franchiseModel = findByName(franchiseName);
+
+        BranchModel branch = branchRepository.findByNombreAndFranchise_Id(
+                branchName, franchiseModel.getId()).orElseThrow();
+
+        List<BranchProductModel> products = branchProductRepository.findAllByBranch_Id(branch.getId());
+
+        for (BranchProductModel branchProductModel : products) {
+            if (branchProductModel.getProduct().getNombre().equals(productName)) {
+                throw new Exception("El producto ya se encuentra registrado en la sucursal");
+            }
+        }
+
+        BranchProductModel branchProduct = branchProductRepository
+                .findByBranch_IdAndProduct_Id(branch.getId(), productModel.getId())
+                .orElse(new BranchProductModel(branch, productModel));
+
+        branchProductRepository.save(branchProduct);
+
+        return franchiseModel;
+    }
+
+    @Override
+    public FranchiseModel updateProductStock(String franchiseName, String branchName, String productName, int stock)
+            throws Exception {
+
+        ProductModel productModel = productService.findByName(productName);
+        FranchiseModel franchiseModel = findByName(franchiseName);
+
+        BranchModel branch = branchRepository.findByNombreAndFranchise_Id(
+                branchName, franchiseModel.getId()).orElseThrow();
+
+        List<BranchProductModel> products = branchProductRepository.findAllByBranch_Id(branch.getId());
+
+        Boolean existe = validateProduct(products, productName);
+
+        if (!existe) {
+            throw new Exception("El producto no existe o no esta registrado en la franquisia");
+        }
+
+        BranchProductModel branchProduct = branchProductRepository
+                .findByBranch_IdAndProduct_Id(branch.getId(), productModel.getId())
+                .orElse(null);
+
+        if (branchProduct == null) {
+            throw new Exception("El producto no existe o no esta registrado en la franquisia");
+        }
+        branchProduct.setStock(stock);
+        branchProductRepository.save(branchProduct);
+
+        return franchiseModel;
+
+    }
+
+    private Boolean validateProduct(List<BranchProductModel> products, String productName) {
+        Boolean existe = false;
+        for (BranchProductModel branchProductModel : products) {
+
+            if (branchProductModel.getProduct().getNombre().equals(productName)) {
+                existe = true;
+            }
+        }
+        return existe;
+
+    }
+
+    @Override
+    public Map<String, ?> getMaxStock(String franchiseName) throws Exception {
+
+        Map<String, Object> response = new HashMap<>();
+        FranchiseModel franchiseModel = findByName(franchiseName);
+
+        for (BranchModel branchTemp : franchiseModel.getBranchs()) {
+            BranchModel branch = branchRepository.findByNombreAndFranchise_Id(
+                    branchTemp.getNombre(), franchiseModel.getId()).orElseThrow();
+            List<BranchProductModel> products = branchProductRepository.findAllByBranch_Id(branch.getId());
+
+            Optional<BranchProductModel> maxProductModel = products.stream()
+                    .max(Comparator.comparingInt(BranchProductModel::getStock));
+
+            if (maxProductModel.isPresent()) {
+                BranchProductModel model = maxProductModel.get();
+                Map<String, Object> producto = new HashMap<>();
+                producto.put("stock", model.getStock());
+                producto.put("nombre", model.getProduct().getNombre());
+                response.put(branchTemp.getNombre(), producto);
+            }
+        }
+
+        return response;
+    }
 }
