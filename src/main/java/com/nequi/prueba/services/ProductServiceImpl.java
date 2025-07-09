@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nequi.prueba.dto.ProductDTO;
-import com.nequi.prueba.models.FranchiseModel;
 import com.nequi.prueba.models.ProductModel;
 import com.nequi.prueba.repositories.ProductRepository;
 
