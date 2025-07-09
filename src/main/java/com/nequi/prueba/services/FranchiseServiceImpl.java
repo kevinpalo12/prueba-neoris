@@ -241,6 +241,12 @@ public class FranchiseServiceImpl implements FranchiseService {
 
     @Override
     public FranchiseModel updateName(String franchiseName, String NewName) throws Exception {
+        Optional<FranchiseModel> newFranchiseModelOpt = franchiseRepository.findByNombre(NewName);
+
+        if (newFranchiseModelOpt.isPresent()) {
+            throw new Exception("La franquisia con el nombre " + NewName + " ya existe");
+        }
+
         Optional<FranchiseModel> franchiseModelOpt = franchiseRepository.findByNombre(franchiseName);
 
         if (!franchiseModelOpt.isPresent()) {
@@ -257,6 +263,13 @@ public class FranchiseServiceImpl implements FranchiseService {
     public FranchiseModel updateBranchName(String franchiseName, String branchName, String NewName) throws Exception {
 
         FranchiseModel franchiseModel = findByName(franchiseName);
+
+        Optional<BranchModel> newBranch = branchRepository.findByNombreAndFranchise_Id(
+                NewName, franchiseModel.getId());
+
+        if (newBranch.isPresent()) {
+            throw new Exception("Ya existe una franquisia con el nombre " + NewName);
+        }
 
         BranchModel branch = branchRepository.findByNombreAndFranchise_Id(
                 branchName, franchiseModel.getId()).orElseThrow();
