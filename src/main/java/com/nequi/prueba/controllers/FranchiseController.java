@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +14,7 @@ import com.nequi.prueba.dto.BranchDTO;
 import com.nequi.prueba.dto.FranchiseDTO;
 import com.nequi.prueba.mappers.FranchiseMapper;
 import com.nequi.prueba.models.FranchiseModel;
+import com.nequi.prueba.services.BranchService;
 import com.nequi.prueba.services.FranchiseService;
 
 @RestController
@@ -22,11 +24,14 @@ public class FranchiseController {
     @Autowired
     FranchiseService franchiseService;
 
+    @Autowired
+    BranchService branchService;
+
     @PostMapping("/add")
     public ResponseEntity<FranchiseDTO> add(@RequestBody FranchiseDTO model) {
         try {
             FranchiseModel modelResponse = franchiseService.add(model);
-            FranchiseDTO dto = FranchiseMapper.toDto(modelResponse);
+            FranchiseDTO dto = franchiseService.findFullData(modelResponse.getId());
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -35,10 +40,10 @@ public class FranchiseController {
         }
     }
 
-    @PostMapping("/add_branch")
-    public ResponseEntity<FranchiseDTO> addBranch(@RequestParam Long franchise, @RequestBody BranchDTO model) {
+    @PutMapping("/add_branch")
+    public ResponseEntity<FranchiseDTO> addBranch(@RequestParam String franchise, @RequestParam String branch) {
         try {
-            FranchiseModel modelResponse = franchiseService.addBranch(model);
+            FranchiseModel modelResponse = branchService.addBranch(franchise, branch);
             FranchiseDTO dto = FranchiseMapper.toDto(modelResponse);
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.nequi.prueba.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,13 +40,11 @@ public class BranchModel {
 
     @JsonIgnore
     @OneToMany(mappedBy = "branch", orphanRemoval = true)
-    private List<BranchProductModel> branchProducts;
+    private List<BranchProductModel> branchProducts = new ArrayList<>();
 
     public BranchModel(String nombre, FranchiseModel franchise) {
         this.nombre = nombre;
         this.franchise = franchise;
     }
-
-    
 
 }
