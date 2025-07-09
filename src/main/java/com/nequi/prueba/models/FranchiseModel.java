@@ -1,8 +1,8 @@
 package com.nequi.prueba.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.ManyToAny;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -33,6 +33,12 @@ public class FranchiseModel {
     private String nombre;
 
     @OneToMany(mappedBy = "franchise", cascade = CascadeType.ALL)
-    private List<BranchModel> branchs;
+    private List<BranchModel> branchs = new ArrayList<>();
+
+    public FranchiseModel(String nombre) {
+        this.nombre = nombre;
+    }
+
+    
 
 }

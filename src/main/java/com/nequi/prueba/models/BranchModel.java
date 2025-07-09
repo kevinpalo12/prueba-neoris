@@ -2,14 +2,13 @@ package com.nequi.prueba.models;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -35,11 +34,18 @@ public class BranchModel {
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "franchise_id") 
+    @JoinColumn(name = "franchise_id")
     private FranchiseModel franchise;
 
-    @ManyToMany
-    @JoinTable(name = "branch_product", joinColumns = @JoinColumn(name = "branch_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<ProductModel> productos;
+    @JsonIgnore
+    @OneToMany(mappedBy = "branch", orphanRemoval = true)
+    private List<BranchProductModel> branchProducts;
+
+    public BranchModel(String nombre, FranchiseModel franchise) {
+        this.nombre = nombre;
+        this.franchise = franchise;
+    }
+
+    
 
 }
