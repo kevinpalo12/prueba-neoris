@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nequi.prueba.dto.BranchDTO;
 import com.nequi.prueba.dto.FranchiseDTO;
 import com.nequi.prueba.mappers.FranchiseMapper;
 import com.nequi.prueba.models.FranchiseModel;
@@ -71,15 +70,29 @@ public class FranchiseController {
     @PostMapping("/updateName")
     public ResponseEntity<FranchiseDTO> updateName(@RequestParam String franchiseName, @RequestParam String newName) {
         try {
-
             FranchiseModel modelResponse = franchiseService.updateName(franchiseName, newName);
             FranchiseDTO dto = franchiseService.findFullData(modelResponse.getId());
             return new ResponseEntity<>(dto, HttpStatus.OK);
-          
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
 
+        }
+    }
+
+    @PostMapping("/updateBranchName")
+    public ResponseEntity<FranchiseDTO> updateBranchName(@RequestParam String franchiseName,
+            @RequestParam String branchName,
+            @RequestParam String newName) {
+        try {
+            FranchiseModel modelResponse = franchiseService.updateBranchName(franchiseName, branchName, newName);
+            FranchiseDTO dto = franchiseService.findFullData(modelResponse.getId());
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 }

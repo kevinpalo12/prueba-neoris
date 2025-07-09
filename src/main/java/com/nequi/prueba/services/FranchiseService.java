@@ -26,4 +26,7 @@ public interface FranchiseService {
 
     public FranchiseModel updateName(String franchiseName, String NewName)
             throws Exception;
+
+    public FranchiseModel updateBranchName(String franchiseName, String branchName, String NewName)
+            throws Exception;
 }

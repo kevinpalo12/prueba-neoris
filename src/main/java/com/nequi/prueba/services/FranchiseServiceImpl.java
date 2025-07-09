@@ -252,4 +252,18 @@ public class FranchiseServiceImpl implements FranchiseService {
         return franchiseRepository.save(franchiseModel);
 
     }
+
+    @Override
+    public FranchiseModel updateBranchName(String franchiseName, String branchName, String NewName) throws Exception {
+
+        FranchiseModel franchiseModel = findByName(franchiseName);
+
+        BranchModel branch = branchRepository.findByNombreAndFranchise_Id(
+                branchName, franchiseModel.getId()).orElseThrow();
+
+        branch.setNombre(NewName);
+        branchRepository.save(branch);
+        return franchiseModel;
+
+    }
 }
