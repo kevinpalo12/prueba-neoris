@@ -56,12 +56,26 @@ public class FranchiseController {
         }
     }
 
-
     @GetMapping("/max_stock")
-    public ResponseEntity<Map<String,?>> maxStock(@RequestParam String franchise) {
+    public ResponseEntity<Map<String, ?>> maxStock(@RequestParam String franchise) {
         try {
             Map<String, ?> modelResponse = franchiseService.getMaxStock(franchise);
             return new ResponseEntity<>(modelResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+
+        }
+    }
+
+    @PostMapping("/updateName")
+    public ResponseEntity<FranchiseDTO> updateName(@RequestParam String franchiseName, @RequestParam String newName) {
+        try {
+
+            FranchiseModel modelResponse = franchiseService.updateName(franchiseName, newName);
+            FranchiseDTO dto = franchiseService.findFullData(modelResponse.getId());
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+          
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);

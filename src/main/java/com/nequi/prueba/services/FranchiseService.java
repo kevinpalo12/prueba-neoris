@@ -23,4 +23,7 @@ public interface FranchiseService {
 
     public Map<String, ?> getMaxStock(String franchiseName)
             throws Exception;
+
+    public FranchiseModel updateName(String franchiseName, String NewName)
+            throws Exception;
 }

@@ -238,4 +238,18 @@ public class FranchiseServiceImpl implements FranchiseService {
 
         return response;
     }
+
+    @Override
+    public FranchiseModel updateName(String franchiseName, String NewName) throws Exception {
+        Optional<FranchiseModel> franchiseModelOpt = franchiseRepository.findByNombre(franchiseName);
+
+        if (!franchiseModelOpt.isPresent()) {
+            throw new Exception("La franquisia con el nombre " + franchiseName + " no existe");
+        }
+
+        FranchiseModel franchiseModel = franchiseModelOpt.get();
+        franchiseModel.setNombre(NewName);
+        return franchiseRepository.save(franchiseModel);
+
+    }
 }
